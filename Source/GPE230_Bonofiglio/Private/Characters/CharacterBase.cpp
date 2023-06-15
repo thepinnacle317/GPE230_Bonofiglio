@@ -39,6 +39,8 @@ void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	currentHealth = maxHealth;
+
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -81,6 +83,26 @@ void ACharacterBase::Look(const FInputActionValue& Value)
 	const FVector2d LookAxisVector = Value.Get<FVector2d>();
 	AddControllerPitchInput(LookAxisVector.Y);
 	AddControllerYawInput(LookAxisVector.X);
+}
+
+/* Apply the incoming damage to the player and check if the player was killed */
+float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	// Subtract the incoming damage
+	currentHealth -= DamageAmount;
+
+	UE_LOG(LogTemp, Log, TEXT("Player took %f damage. %f health remaining."), DamageAmount, currentHealth);
+
+	if (currentHealth <= 0)
+		Die();
+	
+	return DamageAmount;
+}
+
+void ACharacterBase::Die()
+{
+	/* Add the functionality for the player to die.  As well prompt the player with the option to restart the level. */
 }
 
 

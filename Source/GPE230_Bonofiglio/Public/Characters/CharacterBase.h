@@ -27,9 +27,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
 
+	/* Player Attributes */
+	UPROPERTY(EditAnywhere, Category="Player Attributes")
+	float maxHealth;
+
 protected:
 	
 	virtual void BeginPlay() override;
+
+	/* Player Attributes */
+	float currentHealth;
 
 	/* Callback for Player Inputs */
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -46,6 +53,9 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void Die();
 	
 
 private:
