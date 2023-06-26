@@ -64,15 +64,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* ViewCamera;
-	
 
+	UPROPERTY(EditAnywhere)
+	UAnimSequence* deathAnimation;
 	
-// For Member Variables
-public:	
+	bool isDead = false;
 	
-	
-
-	
-	
-
 };

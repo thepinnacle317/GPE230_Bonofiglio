@@ -23,7 +23,12 @@ protected:
 	void DetectHit();
 	
 private:
-	
+	UPROPERTY(EditAnywhere)
+	float TraceRadius = 500.f;
+	UPROPERTY(EditAnywhere)
+	FName PunchingHandSocketName;
+	UPROPERTY(EditAnywhere)
+	float HitDamage;
 	
 	
 

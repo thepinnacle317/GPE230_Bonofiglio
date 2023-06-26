@@ -89,20 +89,29 @@ void ACharacterBase::Look(const FInputActionValue& Value)
 float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	AActor* DamageCauser)
 {
-	// Subtract the incoming damage
-	currentHealth -= DamageAmount;
+	if (!isDead)
+	{
+		// Subtract the incoming damage
+		currentHealth -= DamageAmount;
 
-	UE_LOG(LogTemp, Log, TEXT("Player took %f damage. %f health remaining."), DamageAmount, currentHealth);
+		UE_LOG(LogTemp, Log, TEXT("Player took %f damage. %f health remaining."), DamageAmount, currentHealth);
 
-	if (currentHealth <= 0)
-		Die();
+		if (currentHealth <= 0)
+			Die();
 	
-	return DamageAmount;
+		return DamageAmount;
+	}
+	else
+		return 0;
 }
 
 void ACharacterBase::Die()
 {
 	/* Add the functionality for the player to die.  As well prompt the player with the option to restart the level. */
+	isDead = true;
+	currentHealth = 0;
+
+	GetMesh()->PlayAnimation(deathAnimation, false);
 }
 
 
