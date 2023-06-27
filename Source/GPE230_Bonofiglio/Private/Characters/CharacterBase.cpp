@@ -5,6 +5,9 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -57,6 +60,7 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACharacterBase::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACharacterBase::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacterBase::Jump);
+		EnhancedInputComponent->BindAction(StunAction, ETriggerEvent::Triggered, this, &ACharacterBase::ActivateStunParticleSystem);
 	}
 }
 
@@ -107,11 +111,29 @@ float ACharacterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 void ACharacterBase::Die()
 {
-	/* Add the functionality for the player to die.  As well prompt the player with the option to restart the level. */
 	isDead = true;
 	currentHealth = 0;
 
 	GetMesh()->PlayAnimation(deathAnimation, false);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void ACharacterBase::ActivateStunParticleSystem()
+{
+	if (StunSystem)
+	{
+		USceneComponent* AttachComp = GetDefaultAttachComponent();
+
+		UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(StunSystem, AttachComp, NAME_None,
+			FVector(0), FRotator(0), EAttachLocation::Type::KeepRelativeOffset, true);
+
+		NiagaraComp->Activate();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player attempted to use the stun ability but not particle system was found."));
+	}
 }
 
 

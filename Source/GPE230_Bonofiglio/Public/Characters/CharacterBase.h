@@ -15,6 +15,9 @@ class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
+class UNiagaraFunctionLibrary;
+class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class GPE230_BONOFIGLIO_API ACharacterBase : public ACharacter
@@ -51,6 +54,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, Category= Input)
+	UInputAction* StunAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
@@ -69,5 +75,11 @@ private:
 	UAnimSequence* deathAnimation;
 	
 	bool isDead = false;
+
+	UPROPERTY(EditAnywhere)
+	UNiagaraSystem* StunSystem;
+
+	UFUNCTION(BlueprintCallable)
+	void ActivateStunParticleSystem();
 	
 };
