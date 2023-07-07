@@ -3,33 +3,32 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "NPCEnemy.generated.h"
+#include "Characters/CharacterBase.h"
+#include "MazeEnemy.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class GPE230_BONOFIGLIO_API ANPCEnemy : public ACharacter
+class GPE230_BONOFIGLIO_API AMazeEnemy : public ACharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	virtual void Tick(float DeltaTime) override;
-	// Sets default values for this character's properties
-	ANPCEnemy();
+	AMazeEnemy();
+	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable, Category="Collision")
 	void DetectHit();
 	
 private:
+
 	UPROPERTY(EditAnywhere)
 	float TraceRadius = 500.f;
 	UPROPERTY(EditAnywhere)
 	FName PunchingHandSocketName;
 	UPROPERTY(EditAnywhere)
 	float HitDamage;
-	
-	
-
 };

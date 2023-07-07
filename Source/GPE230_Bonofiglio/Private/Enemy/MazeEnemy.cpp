@@ -1,29 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Enemy/NPCEnemy.h"
+#include "Enemy/MazeEnemy.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
 
-// Sets default values
-ANPCEnemy::ANPCEnemy()
+AMazeEnemy::AMazeEnemy()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 }
 
-// Called when the game starts or when spawned
-void ANPCEnemy::BeginPlay()
+void AMazeEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ANPCEnemy::DetectHit()
+void AMazeEnemy::DetectHit()
 {
-	bool canDamage = true;
-
 	// Get location of the fist
 	const FVector PunchLocation = GetMesh()->GetSocketLocation(PunchingHandSocketName);
 
@@ -40,22 +34,24 @@ void ANPCEnemy::DetectHit()
 		 ActorsToIgnore, EDrawDebugTrace::ForDuration, HitArray, true, FLinearColor::Red, FLinearColor::Green, 2.f);
 
 	// Name of this actor
-	FString ownerName = this->GetName();
+	FString OwnerName = this->GetName();
 
+	
 	// If there is a valid hit
 	if (Hit)
 	{
+		bool CanDamage = true;
 		for (const FHitResult HitResult : HitArray)
-			if (canDamage)
+			if (CanDamage)
 			{
-				FString hitActorName = HitResult.GetActor()->GetName();
+				FString HitActorName = HitResult.GetActor()->GetName();
 
-				UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" hit other actor \"%s\", dealing %f damage."), *ownerName, *hitActorName, HitDamage);
+				UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" hit other actor \"%s\", dealing %f damage."), *OwnerName, *HitActorName, HitDamage);
 
 				// Apply damage to the hit actor
 				UGameplayStatics::ApplyDamage(HitResult.GetActor(), HitDamage, GetController(), this, UDamageType::StaticClass());
 
-				canDamage = false;
+				CanDamage = false;
 			}
 	}
 	else
@@ -63,10 +59,3 @@ void ANPCEnemy::DetectHit()
 		UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" did not detect any hit"))
 	}
 }
-
-// Called every frame
-void ANPCEnemy::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
