@@ -31,6 +31,7 @@ public:
 	AMazeCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
+	void SetHUDHealth() const;
 
 protected:
 
@@ -89,7 +90,11 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Overlay")
 	TObjectPtr<UPlayerOverlay> PlayerOverlay;
 	
-	void SetHUDHealth() const;
-	void InitializePlayerOverlay();
 	
+	void InitializePlayerOverlay();
+
+
+public:
+
+	FORCEINLINE UHealthComponent* AddHealth() { return HealthComponent; }
 };

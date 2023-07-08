@@ -20,6 +20,6 @@ void ACharacterBase::HandleDamage(float DamageAmount)
 {
 	if (HealthComponent)
 	{
-		HealthComponent->RecieveDamage(DamageAmount);
+		HealthComponent->ReceiveDamage(DamageAmount);
 	}
 }

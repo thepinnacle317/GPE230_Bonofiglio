@@ -53,6 +53,7 @@ void AMazeCharacter::BeginPlay()
 			Subsystem->AddMappingContext(PlayerContext, 0);
 		}
 	}
+	
 	InitializePlayerOverlay();
 }
 
@@ -153,7 +154,7 @@ void AMazeCharacter::Die()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	/* Keep the player from moving in the DeathPose */
+	/* Keeps the player from moving in the DeathPose */
 	DisableInput(PlayerController);
 }
 

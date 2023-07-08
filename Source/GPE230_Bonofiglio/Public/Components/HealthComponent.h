@@ -16,7 +16,9 @@ public:
 
 	UHealthComponent();
 
-	void RecieveDamage(float Damage);
+	void ReceiveDamage(float Damage);
+	void  AddHealth(float Health);
+	
 	bool IsAlive();
 	float GetHealthPercent();
 

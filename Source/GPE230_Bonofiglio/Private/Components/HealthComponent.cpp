@@ -8,9 +8,14 @@ UHealthComponent::UHealthComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UHealthComponent::RecieveDamage(float Damage)
+void UHealthComponent::ReceiveDamage(float Damage)
 {
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.f, MaxHealth);
+}
+
+void UHealthComponent::AddHealth(float Health)
+{
+	CurrentHealth += Health;
 }
 
 bool UHealthComponent::IsAlive()
