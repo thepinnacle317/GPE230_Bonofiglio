@@ -53,7 +53,6 @@ void AMazeCharacter::BeginPlay()
 			Subsystem->AddMappingContext(PlayerContext, 0);
 		}
 	}
-
 	InitializePlayerOverlay();
 }
 
@@ -65,6 +64,7 @@ void AMazeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &AMazeCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMazeCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AMazeCharacter::Jump);
+		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &AMazeCharacter::Dodge);
 		EnhancedInputComponent->BindAction(StunAction, ETriggerEvent::Triggered, this, &AMazeCharacter::ActivateStunParticleSystem);
 	}
 }
@@ -111,6 +111,15 @@ void AMazeCharacter::ActivateStunParticleSystem()
 	}
 }
 
+void AMazeCharacter::PlayMontage(UAnimMontage* Montage)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && Montage)
+	{
+		AnimInstance->Montage_Play(Montage);
+	}
+}
+
 void AMazeCharacter::SetHUDHealth() const
 {
 	if (PlayerOverlay && HealthComponent)
@@ -140,12 +149,17 @@ void AMazeCharacter::InitializePlayerOverlay()
 void AMazeCharacter::Die()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	GetMesh()->PlayAnimation(deathAnimation, false);
+	GetMesh()->PlayAnimation(DeathAnimation, false);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	/* Keep the player from moving in the DeathPose */
 	DisableInput(PlayerController);
+}
+
+void AMazeCharacter::Dodge()
+{
+	PlayMontage(DodgeMontage);
 }
 
 /* Apply the incoming damage to the player and check if the player was killed */

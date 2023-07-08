@@ -51,11 +51,14 @@ protected:
 	UPROPERTY(EditAnywhere, Category= Input)
 	UInputAction* StunAction;
 
+	UPROPERTY(EditAnywhere, Category= Input)
+	UInputAction* DodgeAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 
 	virtual void Die();
-
+	
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
@@ -66,15 +69,24 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> ViewCamera;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UAnimSequence> deathAnimation;
+	UPROPERTY(EditAnywhere, Category = "Player Animations")
+	TObjectPtr<UAnimSequence> DeathAnimation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Player Animations")
+	UAnimMontage* DodgeMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Player Effects")
 	TObjectPtr<UNiagaraSystem> StunSystem;
 
 	UFUNCTION(BlueprintCallable)
 	void ActivateStunParticleSystem();
 
+	UFUNCTION(BlueprintCallable)
+	void Dodge();
+
+	void PlayMontage(UAnimMontage* Montage);
+
+	UPROPERTY(VisibleAnywhere, Category = "Overlay")
 	TObjectPtr<UPlayerOverlay> PlayerOverlay;
 	
 	void SetHUDHealth() const;

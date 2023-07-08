@@ -23,4 +23,5 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UHealthComponent> HealthComponent;
+	
 };
