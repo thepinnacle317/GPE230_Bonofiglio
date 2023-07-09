@@ -8,7 +8,6 @@
 
 AHealthPickup::AHealthPickup()
 {
-	
 }
 
 void AHealthPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

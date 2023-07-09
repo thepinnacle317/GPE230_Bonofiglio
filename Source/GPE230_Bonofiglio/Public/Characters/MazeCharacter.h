@@ -8,6 +8,8 @@
 #include "Pickups/PickupInterface.h"
 #include "MazeCharacter.generated.h"
 
+class UCollectableComponent;
+class ACookieCollectable;
 class UPlayerOverlay;
 class UHealthComponent;
 class UCameraComponent;
@@ -32,35 +34,36 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Jump() override;
 	void SetHUDHealth() const;
+	void SetHUDCookies() const;
 
 protected:
 
 	virtual void BeginPlay() override;
-	/* Callback for Player Inputs */
+	
+	/* Callback for Player Inputs Start */
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputMappingContext* PlayerContext;
-
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* MovementAction;
-	
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* LookAction;
-
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* JumpAction;
-
 	UPROPERTY(EditAnywhere, Category= Input)
 	UInputAction* StunAction;
-
 	UPROPERTY(EditAnywhere, Category= Input)
 	UInputAction* DodgeAction;
-
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	/* Callback for Player Inputs End */
 
-	virtual void Die();
-	
+	UPROPERTY()
+	TObjectPtr<UCollectableComponent> CollectableComponent;
+
+
+	/* Damage and Death */
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	virtual void Die();
 
 private:
 
@@ -82,19 +85,21 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void ActivateStunParticleSystem();
 
+	/* Dodging Start */
 	UFUNCTION(BlueprintCallable)
 	void Dodge();
+	void PlayMontage(UAnimMontage* Montage) const;
+	/* Dodging End*/
 
-	void PlayMontage(UAnimMontage* Montage);
-
+	/* HUD and Widgets */
 	UPROPERTY(VisibleAnywhere, Category = "Overlay")
 	TObjectPtr<UPlayerOverlay> PlayerOverlay;
-	
-	
 	void InitializePlayerOverlay();
+
+	
 
 
 public:
-
 	FORCEINLINE UHealthComponent* AddHealth() { return HealthComponent; }
+	FORCEINLINE UCollectableComponent* AddCookies() { return CollectableComponent; }
 };

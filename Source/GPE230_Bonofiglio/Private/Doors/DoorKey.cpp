@@ -15,6 +15,8 @@ ADoorKey::ADoorKey()
 	BoxComponent->SetupAttachment(GetRootComponent());
 	
 	KeyMesh = CreateDefaultSubobject<UStaticMeshComponent>("Key Static Mesh");
+	KeyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	KeyMesh->SetCollisionResponseToChannels(ECR_Ignore);
 	KeyMesh->SetupAttachment(BoxComponent);
 }
 

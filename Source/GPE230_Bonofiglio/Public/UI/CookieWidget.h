@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "HealthBar.generated.h"
+#include "CookieWidget.generated.h"
 
-class UProgressBar;
+class UTextBlock;
 /**
  * 
  */
 UCLASS()
-class GPE230_BONOFIGLIO_API UHealthBar : public UUserWidget
+class GPE230_BONOFIGLIO_API UCookieWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
+
 	// Must match the name in the widget in order to bind
 	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UProgressBar> HealthBar;
-	
+	TObjectPtr<UTextBlock> CookieText;
 };

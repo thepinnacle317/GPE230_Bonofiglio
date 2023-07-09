@@ -2,7 +2,6 @@
 
 
 #include "UI/HealthBarComponent.h"
-
 #include "Components/ProgressBar.h"
 #include "UI/HealthBar.h"
 

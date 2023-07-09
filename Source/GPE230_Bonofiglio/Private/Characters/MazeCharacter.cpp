@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Pickups/CollectableComponent.h"
 #include "UI/PlayerHUD.h"
 #include "UI/PlayerOverlay.h"
 
@@ -20,6 +21,7 @@ AMazeCharacter::AMazeCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	CollectableComponent = CreateDefaultSubobject<UCollectableComponent>(TEXT("CollectableComponent"));
 
 	// Ensures that the mouse movement will not be rotating the character mesh and only used to manipulate the camera.
 	bUseControllerRotationPitch = false;
@@ -112,7 +114,7 @@ void AMazeCharacter::ActivateStunParticleSystem()
 	}
 }
 
-void AMazeCharacter::PlayMontage(UAnimMontage* Montage)
+void AMazeCharacter::PlayMontage(UAnimMontage* Montage) const
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && Montage)
@@ -129,6 +131,14 @@ void AMazeCharacter::SetHUDHealth() const
 	}
 }
 
+void AMazeCharacter::SetHUDCookies() const
+{
+	if (PlayerOverlay)
+	{
+		PlayerOverlay->SetCookieCollectables(CollectableComponent->CurrentCookies);
+	}
+}
+
 void AMazeCharacter::InitializePlayerOverlay()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
@@ -141,6 +151,7 @@ void AMazeCharacter::InitializePlayerOverlay()
 			if (PlayerOverlay && HealthComponent)
 			{
 				PlayerOverlay->SetHealthBarPercent(HealthComponent->GetHealthPercent());
+				PlayerOverlay->SetCookieCollectables(CollectableComponent->CurrentCookies);
 				/* Can initialize various other attributes or in game counters here */
 			}
 		}

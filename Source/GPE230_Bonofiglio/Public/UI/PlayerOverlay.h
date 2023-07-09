@@ -7,6 +7,7 @@
 #include "PlayerOverlay.generated.h"
 
 class UProgressBar;
+class UTextBlock;
 /**
  * 
  */
@@ -17,9 +18,13 @@ class GPE230_BONOFIGLIO_API UPlayerOverlay : public UUserWidget
 
 public:
 	void SetHealthBarPercent(float Percent);
+	void SetCookieCollectables(int32 NewValue);
 
 private:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthProgressBar;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> CookieText;
 };
