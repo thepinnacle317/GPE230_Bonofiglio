@@ -108,6 +108,9 @@ void AMazeCharacter::ActivateStunParticleSystem()
 
 		NiagaraComp->Activate();
 	}
+
+
+	
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player attempted to use the stun ability but not particle system was found."));

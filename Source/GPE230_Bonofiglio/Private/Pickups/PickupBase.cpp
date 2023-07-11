@@ -2,7 +2,8 @@
 
 
 #include "Pickups/PickupBase.h"
-
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Pickups/PickupInterface.h"
@@ -19,6 +20,9 @@ APickupBase::APickupBase()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	Sphere->SetupAttachment(GetRootComponent());
+
+	ItemEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Item Effect"));
+	ItemEffect->SetupAttachment(GetRootComponent());
 }
 
 void APickupBase::BeginPlay()
@@ -37,6 +41,7 @@ void APickupBase::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	{
 		PickupInterface->SetOverlappingItem(this);
 		SpawnPickupSound();
+		SpawnPickupSystem();
 		Destroy();
 	}
 }
@@ -56,5 +61,13 @@ void APickupBase::SpawnPickupSound()
 	if (PickupSound)
 	{
 		UGameplayStatics::SpawnSoundAtLocation(this, PickupSound, GetActorLocation());
+	}
+}
+
+void APickupBase::SpawnPickupSystem()
+{
+	if (PickupEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, PickupEffect, Location);
 	}
 }

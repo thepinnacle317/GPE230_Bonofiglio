@@ -19,6 +19,7 @@ void AHealthPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		AMazeCharacter* MazeCharacter = Cast<AMazeCharacter>(OtherActor);
 		PickupInterface->SetOverlappingItem(this);
 		SpawnPickupSound();
+		SpawnPickupSystem();
 		UHealthComponent* HealthComponent = MazeCharacter->AddHealth();
 		if (HealthComponent && MazeCharacter)
 		{
