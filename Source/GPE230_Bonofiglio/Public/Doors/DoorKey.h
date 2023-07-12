@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DoorInterface.h"
 #include "GameFramework/Actor.h"
 #include "DoorKey.generated.h"
 
@@ -12,7 +11,7 @@ class UBoxComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class GPE230_BONOFIGLIO_API ADoorKey : public AActor, public IDoorInterface
+class GPE230_BONOFIGLIO_API ADoorKey : public AActor
 {
 	GENERATED_BODY()
 	
